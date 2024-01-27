@@ -1,7 +1,7 @@
 # app.py
 # Specify the Streamlit version
 import streamlit as st
-st.set_page_config(version="0.90.0")
+st.set_page_config(version="1.30.0")
 
 import streamlit as st
 import pandas as pd
