@@ -92,3 +92,5 @@ def main():
             st.success(f"Top {top_n_input} recommended products for customer with ID {user_id_input}:")
             for product_id, estimated_rating in recommendations:
                 st.write(f"Product ID: {product_id}, Estimated Rating: {estimated_rating}")
+if __name__ == '__main__':
+    main()
