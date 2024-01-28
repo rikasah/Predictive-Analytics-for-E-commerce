@@ -112,15 +112,6 @@ def main():
                 st.write("Average Price per Category:")
                 st.bar_chart(avg_price_per_category.set_index('category'))
 
-            # Most buying category item
-            most_buying_category = df['category'].mode().iloc[0]
-            st.write("Most buying category item:", most_buying_category)
-            
-            # Bar chart for most buying category item
-            most_buying_category_count = df[df['category'] == most_buying_category].shape[0]
-            st.write("Most Buying Category Item:")
-            st.bar_chart(pd.DataFrame({'Most Buying Category Item': [most_buying_category_count]}))
-
             # Bar chart for purchases in each category
             category_purchase_counts = df['category'].value_counts().reset_index()
             category_purchase_counts.columns = ['Category', 'Number of Purchases']
