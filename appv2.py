@@ -11,9 +11,6 @@ import plotly.express as px
 # Set the page title and favicon
 st.set_page_config(page_title="E-commerce Recommender App", page_icon="🛍️")
 
-# Display the version of the app
-st.write("App Version: 1.0.0")
-
 # Load the dataset
 df = pd.read_csv('https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/fake_data.csv')
 
@@ -35,7 +32,7 @@ loaded_svd_model = load_svd_model(svd_model_url)
 if loaded_svd_model is not None:
     st.success("SVD Model loaded successfully")
     # Verify the loaded model
-    st.write(loaded_svd_model)
+    # st.write(loaded_svd_model)
 else:
     st.error("Failed to load the SVD model. Please check the URL.")
 
