@@ -81,20 +81,20 @@ def visualize_data():
     avg_prices = df.groupby('category')['price'].mean()
 
     # Plot average ratings
-    plt.figure(figsize=(12, 6))
-    plt.bar(avg_ratings.index, avg_ratings.values, color='skyblue')
-    plt.title('Average Ratings per Category')
-    plt.xlabel('Category')
-    plt.ylabel('Average Rating')
-    st.pyplot(plt)
+    fig_ratings, ax_ratings = plt.subplots()
+    ax_ratings.bar(avg_ratings.index, avg_ratings.values, color='skyblue')
+    ax_ratings.set_title('Average Ratings per Category')
+    ax_ratings.set_xlabel('Category')
+    ax_ratings.set_ylabel('Average Rating')
+    st.pyplot(fig_ratings)
 
     # Plot average prices
-    plt.figure(figsize=(12, 6))
-    plt.bar(avg_prices.index, avg_prices.values, color='lightcoral')
-    plt.title('Average Prices per Category')
-    plt.xlabel('Category')
-    plt.ylabel('Average Price')
-    st.pyplot(plt)
+    fig_prices, ax_prices = plt.subplots()
+    ax_prices.bar(avg_prices.index, avg_prices.values, color='lightcoral')
+    ax_prices.set_title('Average Prices per Category')
+    ax_prices.set_xlabel('Category')
+    ax_prices.set_ylabel('Average Price')
+    st.pyplot(fig_prices)
 
 # Streamlit app
 def main():
