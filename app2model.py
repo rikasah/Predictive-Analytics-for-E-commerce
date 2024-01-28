@@ -84,11 +84,15 @@ def get_top_n_recommendations(model, user_id, n=5):
     # Predict ratings for products that the user has not purchased
     predictions = []
     for prod in to_predict:
-        prediction = model.predict(user_id, prod)
-        # Print debugging information
-        print(f"User ID: {user_id}, Product ID: {prod}, Prediction: {prediction}")
-        if prediction.details['was_impossible'] is False:
-            predictions.append(prediction)
+        try:
+            prediction = model.predict(user_id, prod)
+            # Print debugging information
+            print(f"User ID: {user_id}, Product ID: {prod}, Prediction: {prediction}")
+            if prediction.details['was_impossible'] is False:
+                predictions.append(prediction)
+        except Exception as e:
+            print(f"Error predicting for User ID: {user_id}, Product ID: {prod}")
+            print(f"Error details: {e}")
 
     # Sort predictions by estimated rating
     predictions.sort(key=lambda x: x.est, reverse=True)
@@ -101,6 +105,7 @@ def get_top_n_recommendations(model, user_id, n=5):
     else:
         recommended_products = [(recommendation.iid, recommendation.est) for recommendation in top_n_recommendations]
         return recommended_products
+
 
 
 # Streamlit app
