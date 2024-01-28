@@ -1,7 +1,10 @@
-# app.py
-# Specify the Streamlit version
 import streamlit as st
-st.set_page_config(version="1.30.0")
+
+# Set the page title and favicon
+st.set_page_config(page_title="E-commerce Recommender App", page_icon="🛍️")
+
+# Display the version of the app
+st.write("App Version: 1.0.0")
 
 import streamlit as st
 import pandas as pd
