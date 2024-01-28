@@ -1,12 +1,4 @@
 import streamlit as st
- 
-# Set the page title and favicon
-st.set_page_config(page_title="E-commerce Recommender App", page_icon="🛍️")
-
-# Display the version of the app
-st.write("App Version: 1.0.0")
-
-import streamlit as st
 import pandas as pd
 from surprise.dump import load
 from surprise.model_selection import train_test_split
@@ -83,7 +75,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-    main()
-
-
