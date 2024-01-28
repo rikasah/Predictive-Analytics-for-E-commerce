@@ -21,6 +21,9 @@ try:
     # Try to load the content as a tuple
     loaded_svd_model_content = pickle.loads(response.content)
     
+    st.write("Loaded Content:", loaded_svd_model_content)
+    st.write("Content Type:", type(loaded_svd_model_content))
+
     if isinstance(loaded_svd_model_content, tuple) and len(loaded_svd_model_content) >= 2:
         # Assuming the content is a tuple, get the second element
         loaded_svd_model = loaded_svd_model_content[1]
@@ -30,6 +33,7 @@ try:
 except Exception as e:
     st.error(f"Error loading SVD model: {e}")
     loaded_svd_model = None
+
 
 
 def get_top_n_recommendations(model, user_id, n=5):
