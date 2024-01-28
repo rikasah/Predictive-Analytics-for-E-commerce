@@ -1,9 +1,11 @@
 import streamlit as st
 import pandas as pd
+from surprise.dump import load
+from surprise.model_selection import train_test_split
+from surprise import SVD
+from surprise import Dataset, Reader
 import requests
-from joblib import load
-import matplotlib.pyplot as plt
-import seaborn as sns
+from joblib import dump, load
 
 # Set the page title and favicon
 st.set_page_config(page_title="E-commerce Recommender App", page_icon="🛍️")
@@ -31,12 +33,47 @@ loaded_svd_model = load_svd_model(svd_model_url)
 # Check if the model was loaded successfully
 if loaded_svd_model is not None:
     st.success("SVD Model loaded successfully")
+    # Verify the loaded model
+    st.write(loaded_svd_model)
 else:
     st.error("Failed to load the SVD model. Please check the URL.")
 
 def get_top_n_recommendations(model, user_id, n=5):
-    # Function to get recommendations (unchanged)
+    # Check if the user ID is in the dataset
+    if user_id not in df['customer_id'].unique():
+        st.warning(f"No data available for customer with ID {user_id}. Please check if the customer has provided ratings.")
+        return []
 
+    # Get a list of all product IDs
+    all_products = df['product_id'].unique()
+
+    # Get the products the user has already purchased
+    purchased_products = df[df['customer_id'] == user_id]['product_id'].tolist()
+
+    # Remove the purchased products from the list
+    to_predict = [prod for prod in all_products if prod not in purchased_products]
+
+    # Check if there are items to predict
+    if not to_predict:
+        st.warning(f"No products available for recommendation for customer with ID {user_id}.")
+        return []
+
+    # Predict ratings for products that the user has not purchased
+    predictions = [model.predict(user_id, prod) for prod in to_predict]
+
+    # Sort predictions by estimated rating
+    predictions.sort(key=lambda x: x.est, reverse=True)
+
+    # Display the top N recommended products
+    top_n_recommendations = predictions[:n]
+    if not top_n_recommendations:
+        st.warning(f"No recommendations available for customer with ID {user_id}. Please check if the customer has provided ratings.")
+        return []
+    else:
+        recommended_products = [(recommendation.iid, recommendation.est) for recommendation in top_n_recommendations]
+        return recommended_products
+
+# Streamlit app
 def main():
     st.title("Product Recommendation App")
 
@@ -55,21 +92,3 @@ def main():
             st.success(f"Top {top_n_input} recommended products for customer with ID {user_id_input}:")
             for product_id, estimated_rating in recommendations:
                 st.write(f"Product ID: {product_id}, Estimated Rating: {estimated_rating}")
-
-    # Visualization for Average Ratings per Category
-    st.subheader("Average Ratings per Category")
-    avg_ratings_per_category = df.groupby('category')['rating'].mean()
-    st.bar_chart(avg_ratings_per_category)
-
-    # Visualization for Average Prices per Category
-    st.subheader("Average Prices per Category")
-    avg_prices_per_category = df.groupby('category')['price'].mean()
-    st.bar_chart(avg_prices_per_category)
-
-    # Visualization for Most Bought Category Item
-    st.subheader("Most Bought Category Item")
-    most_bought_category_item = df['category'].value_counts().idxmax()
-    st.write(f"The most bought category item is: {most_bought_category_item}")
-
-if __name__ == '__main__':
-    main()
