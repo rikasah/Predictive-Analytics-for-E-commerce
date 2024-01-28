@@ -8,18 +8,23 @@ st.write("App Version: 1.0.0")
 
 import streamlit as st
 import pandas as pd
+from surprise.dump import load
 from surprise.model_selection import train_test_split
 from surprise import SVD
 from surprise import Dataset, Reader
-from surprise.dump import dump
-from surprise.dump import load
 
+# Set the page title and favicon
+st.set_page_config(page_title="E-commerce Recommender App", page_icon="🛍️")
+
+# Display the version of the app
+st.write("App Version: 1.0.0")
 
 # Load the dataset
 df = pd.read_csv('https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/fake_data.csv')
 
 # Load the SVD model from the file
-loaded_svd_model = load('https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/svd_model.pkl')[1]
+svd_model_url = 'https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/svd_model.pkl'
+loaded_svd_model = load(svd_model_url)[1]
 
 def get_top_n_recommendations(model, user_id, n=5):
     # Check if the user ID is in the dataset
@@ -77,6 +82,8 @@ def main():
                 st.write(f"Product ID: {product_id}, Estimated Rating: {estimated_rating}")
 
 if __name__ == '__main__':
+    main()
+
     main()
 
 
