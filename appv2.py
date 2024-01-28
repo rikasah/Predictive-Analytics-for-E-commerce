@@ -121,6 +121,12 @@ def main():
             st.write("Most Buying Category Item:")
             st.bar_chart(pd.DataFrame({'Most Buying Category Item': [most_buying_category_count]}))
 
+            # Bar chart for purchases in each category
+            category_purchase_counts = df['category'].value_counts().reset_index()
+            category_purchase_counts.columns = ['Category', 'Number of Purchases']
+            st.write("Purchases in Each Category:")
+            st.bar_chart(category_purchase_counts.set_index('Category'))
+
             # Line chart for daily purchases
             df['purchase_date'] = pd.to_datetime(df['purchase_date'])
             daily_purchases = df.groupby(df['purchase_date'].dt.date)['product_id'].count().reset_index()
