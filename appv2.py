@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 from surprise.dump import load
 from surprise.model_selection import train_test_split
 from surprise import SVD
@@ -73,6 +74,28 @@ def get_top_n_recommendations(model, user_id, n=5):
         recommended_products = [(recommendation.iid, recommendation.est) for recommendation in top_n_recommendations]
         return recommended_products
 
+# Function to visualize average ratings and prices per category
+def visualize_data():
+    # Group by category and calculate average ratings and prices
+    avg_ratings = df.groupby('category')['rating'].mean()
+    avg_prices = df.groupby('category')['price'].mean()
+
+    # Plot average ratings
+    plt.figure(figsize=(12, 6))
+    plt.bar(avg_ratings.index, avg_ratings.values, color='skyblue')
+    plt.title('Average Ratings per Category')
+    plt.xlabel('Category')
+    plt.ylabel('Average Rating')
+    st.pyplot(plt)
+
+    # Plot average prices
+    plt.figure(figsize=(12, 6))
+    plt.bar(avg_prices.index, avg_prices.values, color='lightcoral')
+    plt.title('Average Prices per Category')
+    plt.xlabel('Category')
+    plt.ylabel('Average Price')
+    st.pyplot(plt)
+
 # Streamlit app
 def main():
     st.title("Product Recommendation App")
@@ -92,5 +115,9 @@ def main():
             st.success(f"Top {top_n_input} recommended products for customer with ID {user_id_input}:")
             for product_id, estimated_rating in recommendations:
                 st.write(f"Product ID: {product_id}, Estimated Rating: {estimated_rating}")
+
+    # Visualize average ratings and prices per category
+    visualize_data()
+
 if __name__ == '__main__':
     main()
