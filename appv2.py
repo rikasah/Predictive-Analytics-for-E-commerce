@@ -95,35 +95,45 @@ def main():
                 st.write(f"Product ID: {product_id}, Estimated Rating: {estimated_rating}")
 
     # Visualizations
-    if st.checkbox("Show Visualizations"):
+    st.sidebar.title("Choose Visualization")
+    visualization_option = st.sidebar.selectbox("Select visualization:", ["None", "Average Rating per Category", "Average Price per Category", "Purchases in Each Category", "Daily Purchases"])
+
+    if visualization_option != "None":
         # Check if 'category' column exists in the DataFrame
         if 'category' in df.columns:
-            # Check if 'ratings' column exists in the DataFrame
-            if 'ratings' in df.columns:
+            if visualization_option == "Average Rating per Category" and 'ratings' in df.columns:
                 # Average rating per category
                 avg_rating_per_category = df.groupby('category')['ratings'].mean().reset_index()
                 st.write("Average Rating per Category:")
                 st.bar_chart(avg_rating_per_category.set_index('category'))
 
-            # Check if 'price' column exists in the DataFrame
-            if 'price' in df.columns:
+            elif visualization_option == "Average Price per Category" and 'price' in df.columns:
                 # Average price per category
                 avg_price_per_category = df.groupby('category')['price'].mean().reset_index()
                 st.write("Average Price per Category:")
                 st.bar_chart(avg_price_per_category.set_index('category'))
 
-            # Bar chart for purchases in each category
-            category_purchase_counts = df['category'].value_counts().reset_index()
-            category_purchase_counts.columns = ['Category', 'Number of Purchases']
-            st.write("Purchases in Each Category:")
-            st.bar_chart(category_purchase_counts.set_index('Category'))
+            elif visualization_option == "Purchases in Each Category":
+                # Bar chart for purchases in each category
+                category_purchase_counts = df['category'].value_counts().reset_index()
+                category_purchase_counts.columns = ['Category', 'Number of Purchases']
+                st.write("Purchases in Each Category:")
+                st.bar_chart(category_purchase_counts.set_index('Category'))
 
-            # Line chart for daily purchases
-            df['purchase_date'] = pd.to_datetime(df['purchase_date'])
-            daily_purchases = df.groupby(df['purchase_date'].dt.date)['product_id'].count().reset_index()
-            daily_purchases.columns = ['Date', 'Number of Purchases']
-            st.write("Daily Purchases:")
-            st.line_chart(daily_purchases.set_index('Date'))
+            elif visualization_option == "Daily Purchases":
+                # Line chart for daily purchases
+                df['purchase_date'] = pd.to_datetime(df['purchase_date'])
+                daily_purchases = df.groupby(df['purchase_date'].dt.date)['product_id'].count().reset_index()
+                daily_purchases.columns = ['Date', 'Number of Purchases']
+                st.write("Daily Purchases:")
+                st.line_chart(daily_purchases.set_index('Date'))
+
+    # Feedback comment
+    st.sidebar.title("Feedback")
+    feedback_comment = st.sidebar.text_area("Please leave your feedback here:")
+
+    if st.sidebar.button("Submit Feedback"):
+        st.sidebar.success("Thank you for your feedback!")
 
 if __name__ == '__main__':
     main()
