@@ -6,6 +6,7 @@ from surprise import SVD
 from surprise import Dataset, Reader
 import requests
 from joblib import dump, load
+import plotly.express as px
 
 # Set the page title and favicon
 st.set_page_config(page_title="E-commerce Recommender App", page_icon="🛍️")
@@ -97,30 +98,30 @@ def main():
     if st.checkbox("Show Visualizations"):
         # Check if 'category' column exists in the DataFrame
         if 'category' in df.columns:
-            # Print the columns of your DataFrame
-            st.write("Columns in DataFrame:", df.columns)
-
             # Check if 'ratings' column exists in the DataFrame
             if 'ratings' in df.columns:
                 # Average rating per category
                 avg_rating_per_category = df.groupby('category')['ratings'].mean().reset_index()
+                st.write("Average Rating per Category:")
                 st.bar_chart(avg_rating_per_category.set_index('category'))
-            else:
-                st.warning("The 'ratings' column does not exist in the dataset.")
 
             # Check if 'price' column exists in the DataFrame
             if 'price' in df.columns:
                 # Average price per category
                 avg_price_per_category = df.groupby('category')['price'].mean().reset_index()
+                st.write("Average Price per Category:")
                 st.bar_chart(avg_price_per_category.set_index('category'))
-            else:
-                st.warning("The 'price' column does not exist in the dataset.")
 
             # Most buying category item
             most_buying_category = df['category'].mode().iloc[0]
             st.write("Most buying category item:", most_buying_category)
-        else:
-            st.warning("The 'category' column does not exist in the dataset.")
+
+            # Line chart for daily purchases
+            df['purchase_date'] = pd.to_datetime(df['purchase_date'])
+            daily_purchases = df.groupby(df['purchase_date'].dt.date)['product_id'].count().reset_index()
+            daily_purchases.columns = ['Date', 'Number of Purchases']
+            st.write("Daily Purchases:")
+            st.line_chart(daily_purchases.set_index('Date'))
 
 if __name__ == '__main__':
     main()
