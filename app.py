@@ -4,8 +4,10 @@ from surprise.dump import load
 from surprise.model_selection import train_test_split
 from surprise import SVD
 from surprise import Dataset, Reader
-import requests
-import pickle
+from joblib import dump, load
+
+# Set the page title and favicon
+st.set_page_config(page_title="E-commerce Recommender App", page_icon="🛍️")
 
 # Display the version of the app
 st.write("App Version: 1.0.0")
@@ -13,28 +15,13 @@ st.write("App Version: 1.0.0")
 # Load the dataset
 df = pd.read_csv('https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/fake_data.csv')
 
-# Load the SVD model from the URL
-svd_model_url = 'https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/svd_model.pkl'
-response = requests.get(svd_model_url)
+# Load the SVD model from the file
+svd_model_url = 'https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/svd_model.joblib'
+loaded_svd_model = load(svd_model_url)
+print("SVD Model loaded successfully")
 
-try:
-    # Try to load the content as a tuple
-    loaded_svd_model_content = pickle.loads(response.content)
-    
-    st.write("Loaded Content:", loaded_svd_model_content)
-    st.write("Content Type:", type(loaded_svd_model_content))
-
-    if isinstance(loaded_svd_model_content, tuple) and len(loaded_svd_model_content) >= 2:
-        # Assuming the content is a tuple, get the second element
-        loaded_svd_model = loaded_svd_model_content[1]
-        st.success("SVD Model loaded successfully.")
-    else:
-        st.error("Failed to load the SVD model. Unexpected content structure.")
-except Exception as e:
-    st.error(f"Error loading SVD model: {e}")
-    loaded_svd_model = None
-
-
+# Verify the loaded model
+print(loaded_svd_model)
 
 def get_top_n_recommendations(model, user_id, n=5):
     # Check if the user ID is in the dataset
