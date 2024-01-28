@@ -26,7 +26,7 @@ pip install -r requirements.txt
 ### 3. Run the Streamlit App
 
 ```bash
-streamlit run app.py
+streamlit run appv2.py
 ```
 
 This command will launch the app, and you can access it by visiting the provided URL in your web browser.
