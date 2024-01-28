@@ -100,13 +100,21 @@ def main():
             # Print the columns of your DataFrame
             st.write("Columns in DataFrame:", df.columns)
 
-            # Average rating per category
-            avg_rating_per_category = df.groupby('category')['rating'].mean().reset_index()
-            st.bar_chart(avg_rating_per_category.set_index('category'))
+            # Check if 'rating' column exists in the DataFrame
+            if 'rating' in df.columns:
+                # Average rating per category
+                avg_rating_per_category = df.groupby('category')['rating'].mean().reset_index()
+                st.bar_chart(avg_rating_per_category.set_index('category'))
+            else:
+                st.warning("The 'rating' column does not exist in the dataset.")
 
-            # Average price per category
-            avg_price_per_category = df.groupby('category')['price'].mean().reset_index()
-            st.bar_chart(avg_price_per_category.set_index('category'))
+            # Check if 'price' column exists in the DataFrame
+            if 'price' in df.columns:
+                # Average price per category
+                avg_price_per_category = df.groupby('category')['price'].mean().reset_index()
+                st.bar_chart(avg_price_per_category.set_index('category'))
+            else:
+                st.warning("The 'price' column does not exist in the dataset.")
 
             # Most buying category item
             most_buying_category = df['category'].mode().iloc[0]
