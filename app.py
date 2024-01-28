@@ -8,11 +8,12 @@ st.write("App Version: 1.0.0")
 
 import streamlit as st
 import pandas as pd
-from surprise import load
 from surprise.model_selection import train_test_split
 from surprise import SVD
 from surprise import Dataset, Reader
 from surprise.dump import dump
+from surprise.dump import load
+
 
 # Load the dataset
 df = pd.read_csv('https://github.com/rikasah/Predictive-Analytics-for-E-commerce/blob/88e8d3105dacc32031eea0303d09be1903b6b32c/fake_data.csv')
