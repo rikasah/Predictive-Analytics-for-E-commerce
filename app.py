@@ -19,7 +19,7 @@ from surprise.dump import load
 df = pd.read_csv('https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/fake_data.csv')
 
 # Load the SVD model from the file
-loaded_svd_model = load('https://github.com/rikasah/Predictive-Analytics-for-E-commerce/blob/88e8d3105dacc32031eea0303d09be1903b6b32c/svd_model.pkl')[1]
+loaded_svd_model = load('https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/svd_model.pkl')[1]
 
 def get_top_n_recommendations(model, user_id, n=5):
     # Check if the user ID is in the dataset
