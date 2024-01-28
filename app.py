@@ -1,5 +1,5 @@
 import streamlit as st
-
+ 
 # Set the page title and favicon
 st.set_page_config(page_title="E-commerce Recommender App", page_icon="🛍️")
 
