@@ -4,6 +4,7 @@ from surprise.dump import load
 from surprise.model_selection import train_test_split
 from surprise import SVD
 from surprise import Dataset, Reader
+import requests
 from joblib import dump, load
 
 # Set the page title and favicon
@@ -15,13 +16,27 @@ st.write("App Version: 1.0.0")
 # Load the dataset
 df = pd.read_csv('https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/fake_data.csv')
 
+# Function to download and load the SVD model
+def load_svd_model(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open("svd_model.joblib", "wb") as f:
+            f.write(response.content)
+        return load("svd_model.joblib")
+    else:
+        return None
+
 # Load the SVD model from the file
 svd_model_url = 'https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/svd_model.joblib'
-loaded_svd_model = load(svd_model_url)
-print("SVD Model loaded successfully")
+loaded_svd_model = load_svd_model(svd_model_url)
 
-# Verify the loaded model
-print(loaded_svd_model)
+# Check if the model was loaded successfully
+if loaded_svd_model is not None:
+    st.success("SVD Model loaded successfully")
+    # Verify the loaded model
+    st.write(loaded_svd_model)
+else:
+    st.error("Failed to load the SVD model. Please check the URL.")
 
 def get_top_n_recommendations(model, user_id, n=5):
     # Check if the user ID is in the dataset
