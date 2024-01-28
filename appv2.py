@@ -100,9 +100,9 @@ def main():
             # Print the columns of your DataFrame
             st.write("Columns in DataFrame:", df.columns)
 
-            # Check if 'rating' column exists in the DataFrame
-            if 'rating' in df.columns:
-                # Average ratings per category
+            # Check if 'ratings' column exists in the DataFrame
+            if 'ratings' in df.columns:
+                # Average rating per category
                 avg_rating_per_category = df.groupby('category')['ratings'].mean().reset_index()
                 st.bar_chart(avg_rating_per_category.set_index('category'))
             else:
