@@ -1,12 +1,12 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 from surprise.dump import load
 from surprise.model_selection import train_test_split
 from surprise import SVD
 from surprise import Dataset, Reader
 import requests
 from joblib import dump, load
+import plotly.express as px
 
 # Set the page title and favicon
 st.set_page_config(page_title="E-commerce Recommender App", page_icon="🛍️")
@@ -38,6 +38,25 @@ if loaded_svd_model is not None:
     st.write(loaded_svd_model)
 else:
     st.error("Failed to load the SVD model. Please check the URL.")
+
+# Additional Feature: Visualization
+st.subheader("Visualizations")
+
+# Visualization: Average Rating per Category
+avg_rating_per_category = df.groupby('category')['rating'].mean().reset_index()
+fig1 = px.bar(avg_rating_per_category, x='category', y='rating', title='Average Rating per Category')
+st.plotly_chart(fig1)
+
+# Visualization: Average Price per Category
+avg_price_per_category = df.groupby('category')['price'].mean().reset_index()
+fig2 = px.bar(avg_price_per_category, x='category', y='price', title='Average Price per Category')
+st.plotly_chart(fig2)
+
+# Visualization: Most Buying Category Item
+most_buying_category_item = df['category'].value_counts().reset_index()
+most_buying_category_item.columns = ['category', 'count']
+fig3 = px.bar(most_buying_category_item, x='category', y='count', title='Most Buying Category Item')
+st.plotly_chart(fig3)
 
 def get_top_n_recommendations(model, user_id, n=5):
     # Check if the user ID is in the dataset
@@ -74,28 +93,6 @@ def get_top_n_recommendations(model, user_id, n=5):
         recommended_products = [(recommendation.iid, recommendation.est) for recommendation in top_n_recommendations]
         return recommended_products
 
-# Function to visualize average ratings and prices per category
-def visualize_data():
-    # Group by category and calculate average ratings and prices
-    avg_ratings = df.groupby('category')['rating'].mean()
-    avg_prices = df.groupby('category')['price'].mean()
-
-    # Plot average ratings
-    fig_ratings, ax_ratings = plt.subplots()
-    ax_ratings.bar(avg_ratings.index, avg_ratings.values, color='skyblue')
-    ax_ratings.set_title('Average Ratings per Category')
-    ax_ratings.set_xlabel('Category')
-    ax_ratings.set_ylabel('Average Rating')
-    st.pyplot(fig_ratings)
-
-    # Plot average prices
-    fig_prices, ax_prices = plt.subplots()
-    ax_prices.bar(avg_prices.index, avg_prices.values, color='lightcoral')
-    ax_prices.set_title('Average Prices per Category')
-    ax_prices.set_xlabel('Category')
-    ax_prices.set_ylabel('Average Price')
-    st.pyplot(fig_prices)
-
 # Streamlit app
 def main():
     st.title("Product Recommendation App")
@@ -109,15 +106,12 @@ def main():
     # Get recommendations when the user clicks the "Get Recommendations" button
     if st.button("Get Recommendations"):
         recommendations = get_top_n_recommendations(loaded_svd_model, user_id_input, n=top_n_input)
-        
+
         # Display the recommendations
         if recommendations:
             st.success(f"Top {top_n_input} recommended products for customer with ID {user_id_input}:")
             for product_id, estimated_rating in recommendations:
                 st.write(f"Product ID: {product_id}, Estimated Rating: {estimated_rating}")
-
-    # Visualize average ratings and prices per category
-    visualize_data()
 
 if __name__ == '__main__':
     main()
