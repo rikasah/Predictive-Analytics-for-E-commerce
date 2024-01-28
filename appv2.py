@@ -115,6 +115,11 @@ def main():
             # Most buying category item
             most_buying_category = df['category'].mode().iloc[0]
             st.write("Most buying category item:", most_buying_category)
+            
+            # Bar chart for most buying category item
+            most_buying_category_count = df[df['category'] == most_buying_category].shape[0]
+            st.write("Most Buying Category Item:")
+            st.bar_chart(pd.DataFrame({'Most Buying Category Item': [most_buying_category_count]}))
 
             # Line chart for daily purchases
             df['purchase_date'] = pd.to_datetime(df['purchase_date'])
