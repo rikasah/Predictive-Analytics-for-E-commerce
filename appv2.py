@@ -97,6 +97,9 @@ def main():
     if st.checkbox("Show Visualizations"):
         # Check if 'category' column exists in the DataFrame
         if 'category' in df.columns:
+            # Print the columns of your DataFrame
+            st.write("Columns in DataFrame:", df.columns)
+
             # Average rating per category
             avg_rating_per_category = df.groupby('category')['rating'].mean().reset_index()
             st.bar_chart(avg_rating_per_category.set_index('category'))
@@ -110,9 +113,6 @@ def main():
             st.write("Most buying category item:", most_buying_category)
         else:
             st.warning("The 'category' column does not exist in the dataset.")
-
-# Print the columns of your DataFrame
-print(df.columns)
 
 if __name__ == '__main__':
     main()
