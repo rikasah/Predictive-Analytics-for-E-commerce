@@ -111,5 +111,8 @@ def main():
         else:
             st.warning("The 'category' column does not exist in the dataset.")
 
+# Print the columns of your DataFrame
+print(df.columns)
+
 if __name__ == '__main__':
     main()
