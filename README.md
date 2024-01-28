@@ -41,7 +41,3 @@ This command will launch the app, and you can access it by visiting the provided
 ## Feedback
 
 Feel free to leave your feedback using the provided textarea in the sidebar. Your input is valuable for improving the app.
-
----
-
-You can customize this README based on additional information or specific instructions for your application. Make sure to include details about any external data sources, models, or dependencies.
