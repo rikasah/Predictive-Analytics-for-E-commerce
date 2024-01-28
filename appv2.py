@@ -102,11 +102,11 @@ def main():
 
             # Check if 'rating' column exists in the DataFrame
             if 'rating' in df.columns:
-                # Average rating per category
-                avg_rating_per_category = df.groupby('category')['rating'].mean().reset_index()
+                # Average ratings per category
+                avg_rating_per_category = df.groupby('category')['ratings'].mean().reset_index()
                 st.bar_chart(avg_rating_per_category.set_index('category'))
             else:
-                st.warning("The 'rating' column does not exist in the dataset.")
+                st.warning("The 'ratings' column does not exist in the dataset.")
 
             # Check if 'price' column exists in the DataFrame
             if 'price' in df.columns:
