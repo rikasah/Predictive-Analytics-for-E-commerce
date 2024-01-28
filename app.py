@@ -4,9 +4,8 @@ from surprise.dump import load
 from surprise.model_selection import train_test_split
 from surprise import SVD
 from surprise import Dataset, Reader
-
-# Set the page title and favicon
-st.set_page_config(page_title="E-commerce Recommender App", page_icon="🛍️")
+import requests
+import pickle
 
 # Display the version of the app
 st.write("App Version: 1.0.0")
@@ -14,9 +13,10 @@ st.write("App Version: 1.0.0")
 # Load the dataset
 df = pd.read_csv('https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/fake_data.csv')
 
-# Load the SVD model from the file
+# Load the SVD model from the URL
 svd_model_url = 'https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/svd_model.pkl'
-loaded_svd_model = load(svd_model_url)[1]
+response = requests.get(svd_model_url)
+loaded_svd_model = pickle.loads(response.content)[1]
 
 def get_top_n_recommendations(model, user_id, n=5):
     # Check if the user ID is in the dataset
