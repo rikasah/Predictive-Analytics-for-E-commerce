@@ -16,13 +16,21 @@ df = pd.read_csv('https://github.com/rikasah/Predictive-Analytics-for-E-commerce
 # Load the SVD model from the URL
 svd_model_url = 'https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/svd_model.pkl'
 response = requests.get(svd_model_url)
-loaded_svd_model_content = pickle.loads(response.content)
 
-# Print the loaded content to understand its structure
-st.write("Loaded SVD Model Content:", loaded_svd_model_content)
+try:
+    # Try to load the content as a tuple
+    loaded_svd_model_content = pickle.loads(response.content)
+    
+    if isinstance(loaded_svd_model_content, tuple) and len(loaded_svd_model_content) >= 2:
+        # Assuming the content is a tuple, get the second element
+        loaded_svd_model = loaded_svd_model_content[1]
+        st.success("SVD Model loaded successfully.")
+    else:
+        st.error("Failed to load the SVD model. Unexpected content structure.")
+except Exception as e:
+    st.error(f"Error loading SVD model: {e}")
+    loaded_svd_model = None
 
-# Assuming the content is a tuple, get the second element
-loaded_svd_model = loaded_svd_model_content[1]
 
 def get_top_n_recommendations(model, user_id, n=5):
     # Check if the user ID is in the dataset
