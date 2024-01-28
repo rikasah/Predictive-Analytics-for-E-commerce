@@ -16,7 +16,7 @@ from surprise.dump import load
 
 
 # Load the dataset
-df = pd.read_csv('https://github.com/rikasah/Predictive-Analytics-for-E-commerce/blob/88e8d3105dacc32031eea0303d09be1903b6b32c/fake_data.csv')
+df = pd.read_csv('https://github.com/rikasah/Predictive-Analytics-for-E-commerce/raw/main/fake_data.csv')
 
 # Load the SVD model from the file
 loaded_svd_model = load('https://github.com/rikasah/Predictive-Analytics-for-E-commerce/blob/88e8d3105dacc32031eea0303d09be1903b6b32c/svd_model.pkl')[1]
