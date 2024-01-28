@@ -4,7 +4,7 @@ This Streamlit app provides product recommendations for customers based on a col
 
 ## Instructions to Run the App
 
-Follow these steps to run the E-commerce Recommender App locally:
+Follow these steps to run the Product Recommendation App locally:
 
 ### 1. Clone the Repository
 
