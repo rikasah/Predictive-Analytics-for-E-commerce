@@ -3,3 +3,10 @@ pandas
 plotly
 matplotlib
 scikit-surprise
+load
+SVD
+Dataset
+Reader
+requests
+dump
+plotly.express
