@@ -3,3 +3,5 @@ pandas
 plotly
 matplotlib
 scikit-surprise
+numpy==1.26.4
+
